@@ -1,0 +1,70 @@
+import tkinter as tk
+from tkinter import messagebox
+
+
+kullanici_bilgileri = {
+    "1234": {
+        "pin": "1234",
+        "bakiye": 1000
+    }
+}
+
+def bakiye_sorgula():
+    kart_numarasi = kart_numarasi_entry.get()
+    pin = pin_entry.get()
+    
+    if kart_numarasi in kullanici_bilgileri and kullanici_bilgileri[kart_numarasi]["pin"] == pin:
+        bakiye = kullanici_bilgileri[kart_numarasi]["bakiye"]
+        messagebox.showinfo("Bakiye Sorgulama", f"Bakiyeniz: {bakiye} TL")
+    else:
+        messagebox.showerror("Hata", "Kart numarası veya PIN yanlış!")
+
+def para_cek():
+    kart_numarasi = kart_numarasi_entry.get()
+    pin = pin_entry.get()
+    miktar = miktar_entry.get()
+    
+    if kart_numarasi in kullanici_bilgileri and kullanici_bilgileri[kart_numarasi]["pin"] == pin:
+        bakiye = kullanici_bilgileri[kart_numarasi]["bakiye"]
+        miktar = int(miktar)
+        
+        if miktar <= bakiye:
+            kullanici_bilgileri[kart_numarasi]["bakiye"] -= miktar
+            messagebox.showinfo("Para Çekme", f"{miktar} TL çekildi. Yeni bakiyeniz: {kullanici_bilgileri[kart_numarasi]['bakiye']} TL")
+        else:
+            messagebox.showerror("Hata", "Yetersiz bakiye!")
+    else:
+        messagebox.showerror("Hata", "Kart numarası veya PIN yanlış!")
+
+
+root = tk.Tk()
+root.title("ATM Uygulaması")
+
+
+kart_numarasi_label = tk.Label(root, text="Kart Numarası:")
+kart_numarasi_label.pack()
+kart_numarasi_entry = tk.Entry(root)
+kart_numarasi_entry.pack()
+
+
+pin_label = tk.Label(root, text="PIN:")
+pin_label.pack()
+pin_entry = tk.Entry(root, show="*")
+pin_entry.pack()
+
+
+bakiye_sorgula_button = tk.Button(root, text="Bakiye Sorgula", command=bakiye_sorgula)
+bakiye_sorgula_button.pack()
+
+
+para_cek_button = tk.Button(root, text="Para Çek", command=para_cek)
+para_cek_button.pack()
+
+
+miktar_label = tk.Label(root, text="Çekilecek Miktar (TL):")
+miktar_label.pack()
+miktar_entry = tk.Entry(root)
+miktar_entry.pack()
+root.geometry("400x300")
+
+root.mainloop()
